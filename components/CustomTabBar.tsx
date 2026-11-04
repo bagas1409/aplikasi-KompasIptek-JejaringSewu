@@ -3,7 +3,7 @@ import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
+export default function CustomTabBar({ state, descriptors, navigation }: any) {
   const insets = useSafeAreaInsets();
 
   const BOTTOM_MIN = Platform.OS === 'android' ? 14 : 18;
@@ -13,7 +13,7 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
     <View style={styles.wrapper} pointerEvents="box-none">
       {/* FLOATING ISLAND TAB BAR */}
       <View style={[styles.container, { bottom: bottomPosition }]}>
-        {state.routes.map((route, index) => {
+        {state.routes.map((route: any, index: number) => {
           const { options } = descriptors[route.key];
           const isFocused = state.index === index;
           const renderIcon = options.tabBarIcon;

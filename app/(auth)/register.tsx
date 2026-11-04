@@ -145,7 +145,7 @@ export default function RegisterScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={{ flex: 1, backgroundColor: '#DCE8EE' }}
     >
-      <StatusBar style="dark" backgroundColor="#DCE8EE" />
+      <StatusBar style="dark" />
 
       {/* Ambient Atmospheric Blur Layers */}
       <View pointerEvents="none" className="absolute inset-0 overflow-hidden">

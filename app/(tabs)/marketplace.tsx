@@ -413,7 +413,7 @@ export default function MarketplaceScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="dark" backgroundColor="#FCF9F8" />
+      <StatusBar style="dark" />
 
       {/* ================= FIXED TOP APP BAR ================= */}
       <View style={[styles.topHeader, { paddingTop: Math.max(insets.top, 12) }]}>

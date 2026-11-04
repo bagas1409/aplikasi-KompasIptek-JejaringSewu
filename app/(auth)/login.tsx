@@ -68,7 +68,7 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
       style={{ flex: 1, backgroundColor: '#DCE8EE' }}
     >
-      <StatusBar style="dark" backgroundColor="#DCE8EE" />
+      <StatusBar style="dark" />
 
       {/* Ambient Atmospheric Blur Layers (Background Ornaments) */}
       <View pointerEvents="none" className="absolute inset-0 overflow-hidden">

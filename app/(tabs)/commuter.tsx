@@ -79,7 +79,7 @@ export default function CommuterScreen() {
   const [gpsAccuracy, setGpsAccuracy] = useState<number | null>(null);
   const [isBroadcastingGps, setIsBroadcastingGps] = useState(false);
   const [lastPingTime, setLastPingTime] = useState<string | null>(null);
-  const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const pingIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   // Modal Buka Rute Kurir
   const [isCreateRouteModalOpen, setIsCreateRouteModalOpen] = useState(false);
   const [originName, setOriginName] = useState('Pekon Pagelaran');
@@ -131,11 +131,13 @@ export default function CommuterScreen() {
       } catch (err: any) {
         console.warn('Gagal memuat rute komuter nearby:', err.message);
       }
-      try {
-        const myRes: any = await apiClient.get('/commuters/routes/my-active');
-        setMyRoute(myRes.data || null);
-      } catch (err: any) {
-        console.warn('Gagal memuat rute saya:', err.message);
+      if (user) {
+        try {
+          const myRes: any = await apiClient.get('/commuters/routes/my-active');
+          setMyRoute(myRes.data || null);
+        } catch (err: any) {
+          console.warn('Gagal memuat rute saya:', err.message);
+        }
       }
     } finally {
       setLoading(false);
@@ -268,13 +270,14 @@ export default function CommuterScreen() {
     }
     setSubmittingOrder(true);
     try {
-      const coords =
-        currentCoords || (await detectUserLocation()) || { lat: -5.3582, lng: 104.9744 };
+      const detected = currentCoords || (await detectUserLocation());
+      const pickupLat = currentCoords?.lat ?? (detected as any)?.latitude ?? (detected as any)?.lat ?? -5.3582;
+      const pickupLng = currentCoords?.lng ?? (detected as any)?.longitude ?? (detected as any)?.lng ?? 104.9744;
       await apiClient.post(`/commuters/routes/${selectedRouteForOrder.id}/orders`, {
         itemDescription,
         fuelShareCost: cost,
-        pickupLat: coords.lat,
-        pickupLng: coords.lng,
+        pickupLat,
+        pickupLng,
       });
       Alert.alert(
         'Permintaan Terkirim! 🎉',
@@ -357,7 +360,7 @@ export default function CommuterScreen() {
   }, [myRoute, orderStatusFilter]);
   return (
     <View style={styles.screenContainer}>
-      <StatusBar style="dark" backgroundColor="#FFFFFF" />
+      <StatusBar style="dark" />
       {/* ========================================================================= */}
       {/* TOP HEADER BAR & 3-SEGMENTED NAVIGATION                                   */}
       {/* ========================================================================= */}

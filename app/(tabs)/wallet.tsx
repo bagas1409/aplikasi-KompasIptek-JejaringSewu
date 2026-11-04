@@ -222,6 +222,11 @@ export default function WalletScreen() {
   };
 
   const fetchWalletAndScore = async () => {
+    if (!user) {
+      setLoading(false);
+      setRefreshing(false);
+      return;
+    }
     try {
       const [walletRes, scoreRes]: [any, any] = await Promise.all([
         apiClient.get('/wallets/me').catch(() => ({ data: null })),
@@ -426,7 +431,7 @@ export default function WalletScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="dark" backgroundColor="#FFFFFF" />
+      <StatusBar style="dark" />
 
       {/* ================= FIXED TOP HEADER (wallet.md) ================= */}
       <View style={[styles.topHeader, { paddingTop: Math.max(insets.top, 12) }]}>

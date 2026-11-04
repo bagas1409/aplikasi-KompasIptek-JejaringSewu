@@ -165,7 +165,7 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.screen}>
-      <StatusBar style="light" backgroundColor="#006A42" />
+      <StatusBar style="light" />
 
       <ScrollView
         style={styles.scrollView}

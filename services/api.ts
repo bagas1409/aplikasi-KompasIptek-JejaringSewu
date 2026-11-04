@@ -53,18 +53,22 @@ apiClient.interceptors.response.use(
     const status = error.response?.status;
     const errorData = error.response?.data;
 
-    console.error(`🚨 [API ERROR ${status || "NETWORK_FAIL"}] ${method} ${fullUrl}`, {
-      message: error.message,
-      status: status,
-      backendResponse: errorData,
-    });
+    if (status === 401) {
+      console.warn(`🔒 [API 401 UNAUTHORIZED] ${method} ${fullUrl} - ${errorData?.message || error.message}`);
+    } else {
+      console.error(`🚨 [API ERROR ${status || "NETWORK_FAIL"}] ${method} ${fullUrl}`, {
+        message: error.message,
+        status: status,
+        backendResponse: errorData,
+      });
+    }
 
     if (error.response?.status === 401 && !originalRequest?._retry) {
       originalRequest._retry = true;
       try {
-        console.log(`🔄 [API AUTH] Mencoba refresh token kedaluwarsa...`);
         const refreshToken = await SecureStore.getItemAsync(Config.STORAGE_KEYS.REFRESH_TOKEN);
         if (refreshToken) {
+          console.log(`🔄 [API AUTH] Mencoba refresh token kedaluwarsa...`);
           const refreshRes = await axios.post(`${Config.API_BASE_URL}/auth/refresh`, {
             refreshToken,
           });

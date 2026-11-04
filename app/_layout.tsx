@@ -64,7 +64,7 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <AuthProvider>
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <StatusBar style="light" backgroundColor="#0F1416" />
+          <StatusBar style="light" />
           <RootNavigationLayout />
         </ThemeProvider>
       </AuthProvider>

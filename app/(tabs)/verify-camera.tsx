@@ -52,6 +52,7 @@ import {
   Eye,
 } from 'lucide-react-native';
 import { apiClient } from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useRouter } from 'expo-router';
@@ -59,6 +60,7 @@ import { useRouter } from 'expo-router';
 export default function VerifyCameraScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { user } = useAuth();
   const { width: windowWidth, height: windowHeight } = useWindowDimensions();
   const isCompact = windowWidth < 380;
 
@@ -135,6 +137,7 @@ export default function VerifyCameraScreen() {
 
   // 3. Ambil daftar transaksi aktif pengguna
   const fetchActiveTransactions = async () => {
+    if (!user) return;
     try {
       const res: any = await apiClient.get('/transactions/me');
       const all: any[] = res.data || [];
@@ -155,7 +158,7 @@ export default function VerifyCameraScreen() {
 
   useEffect(() => {
     fetchActiveTransactions();
-  }, []);
+  }, [user]);
 
   const triggerToast = (msg: string) => {
     setToastMessage(msg);
@@ -354,7 +357,7 @@ export default function VerifyCameraScreen() {
   if (!permission || !permission.granted) {
     return (
       <View style={styles.permissionScreen}>
-        <StatusBar style="dark" backgroundColor="#FCF9F8" />
+        <StatusBar style="dark" />
         <View style={[styles.permissionCard, { marginTop: Math.max(insets.top, 24) }]}>
           {/* Ambient Mint Ripple Badge Illustration */}
           <View style={styles.permissionIllustrationWrap}>
@@ -454,7 +457,7 @@ export default function VerifyCameraScreen() {
   if (verifiedSuccess) {
     return (
       <View style={styles.successScreen}>
-        <StatusBar style="dark" backgroundColor="#FCF9F8" />
+        <StatusBar style="dark" />
         <ScrollView
           contentContainerStyle={[
             styles.successScrollContent,
@@ -572,7 +575,7 @@ export default function VerifyCameraScreen() {
 
     return (
       <View style={styles.reviewScreen}>
-        <StatusBar style="dark" backgroundColor="#FCF9F8" />
+        <StatusBar style="dark" />
 
         {/* Floating Toast Notification */}
         {toastMessage && (
@@ -818,7 +821,7 @@ export default function VerifyCameraScreen() {
   // =========================================================================
   return (
     <View style={styles.liveCameraScreen}>
-      <StatusBar style="light" backgroundColor="#000000" />
+      <StatusBar style="light" />
 
       {/* Screen Flash Flare Animation */}
       <Animated.View
@@ -827,7 +830,7 @@ export default function VerifyCameraScreen() {
       />
 
       <View style={styles.cameraViewportWrap}>
-        <CameraView ref={cameraRef} style={StyleSheet.absoluteFillObject} facing={facing}>
+        <CameraView ref={cameraRef} style={StyleSheet.absoluteFill} facing={facing}>
           {/* Rule of Thirds Photography Grid */}
           <View style={styles.gridContainer} pointerEvents="none">
             <View style={styles.gridRow}>
@@ -1278,14 +1281,14 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   flashFlareOverlay: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     backgroundColor: '#FFFFFF',
     zIndex: 99,
   },
 
   /* Grid lines for Rule of Thirds */
   gridContainer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     opacity: 0.28,
   },
   gridRow: {
@@ -1314,7 +1317,7 @@ const styles = StyleSheet.create({
 
   /* Precision Focus Reticle */
   reticleContainer: {
-    ...StyleSheet.absoluteFillObject,
+    ...StyleSheet.absoluteFill,
     alignItems: 'center',
     justifyContent: 'center',
   },
