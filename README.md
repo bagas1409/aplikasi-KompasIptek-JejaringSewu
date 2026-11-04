@@ -28,11 +28,12 @@ mobile/
 ├── app/
 │   ├── _layout.tsx                     # Root Layout & AuthProvider
 │   └── (tabs)/
-│       ├── _layout.tsx                 # Bottom Navigation Tabs (4 Fitur Utama)
+│       ├── _layout.tsx                 # Bottom Navigation Tabs (5 Fitur Utama)
 │       ├── commuter.tsx                # Modul 1: Nebeng-Jastip (Warga & Kurir Komuter)
 │       ├── marketplace.tsx             # Modul 2: Bursa Panen Petani & Mini-Job Disabilitas
 │       ├── verify-camera.tsx           # Modul 3: Kamera Selfie PoW + Hashing Geospasial
-│       └── profile-wallet.tsx          # Modul 4: Dompet Double-Entry, Skor SPK & Intervensi Gizi
+│       ├── wallet.tsx                  # Modul 4: Dompet Double-Entry, Skor SPK & Intervensi Gizi
+│       └── profile.tsx                 # Modul 5: Profil Warga, Switcher Peran Demo, Login & Register
 ├── context/
 │   └── AuthContext.tsx                 # Manajemen Sesi JWT, Refresh Token & DeviceId
 ├── services/
